@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>raidrecord_v0._5._1</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Version>0.5.1</Version>
+        <!-- The two lines below will set the output path for the binaries -->
+        <OutputPath>bin\$(Configuration)\$(ProjectName)\$(AssemblyName)-$(Version)\</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SPTarkov.Common" Version="4.0.0" />
+        <PackageReference Include="SPTarkov.DI" Version="4.0.0" />
+        <PackageReference Include="SPTarkov.Server.Core" Version="4.0.0" />
+        <PackageReference Include="SPTarkov.Server.Web" Version="4.0.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Content Update="config.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Include="raidrecord-v0.5.1.csproj.user" />
+    </ItemGroup>
+
+</Project>

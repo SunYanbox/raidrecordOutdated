@@ -1,0 +1,70 @@
+name: Build RaidRecord
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      DOTNET_VERSION: '9.0.x'
+      PROJECT_PATH: 'v0.5.1/raidrecord-v0.5.1.csproj'
+      CONFIGURATION: 'Release'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} -c ${{ env.CONFIGURATION }} --no-restore
+
+      - name: Publish (library build produces DLL in bin)
+        run: |
+          echo Build output:
+          dir v0.5.1\bin\${{ env.CONFIGURATION }}\
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raidrecord-v0.5.1-${{ env.CONFIGURATION }}
+          path: |
+            v0.5.1/bin/${{ env.CONFIGURATION }}/
+
+  linux-build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_VERSION: '9.0.x'
+      PROJECT_PATH: 'v0.5.1/raidrecord-v0.5.1.csproj'
+      CONFIGURATION: 'Release'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} -c ${{ env.CONFIGURATION }} --no-restore
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raidrecord-v0.5.1-linux-${{ env.CONFIGURATION }}
+          path: |
+            v0.5.1/bin/${{ env.CONFIGURATION }}/
